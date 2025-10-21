@@ -1,334 +1,788 @@
+
 <!doctype html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="c:https://lumi.new/lumi.ing/logo.png" />
+    <link rel="icon" href="https://lumi.new/lumi.ing/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FUT RJ - Notícias do Futebol Carioca</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="Notícias do futebol carioca - FUT RJ">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* Light mode (default) */
+        body {
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+
+        /* Dark mode */
+        body.dark {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* Top bar */
+        .top-bar {
+            background-color: #9ca3af;
+            color: #4b5563;
+            font-size: 0.75rem;
+            padding: 0.25rem 1rem;
+        }
+
+        body.dark .top-bar {
+            background-color: #374151;
+            color: #d1d5db;
+        }
+
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        body.dark .header {
+            background-color: #1f2937;
+        }
+
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 4rem;
+            padding: 0 1rem;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: #4b5563;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: #1f2937;
+        }
+
+        body.dark .nav-item {
+            color: #d1d5db;
+        }
+
+        body.dark .nav-item:hover {
+            color: #f9fafb;
+        }
+
+        .logo-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .logo {
+            width: 7rem;
+            height: auto;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dark-toggle {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            background-color: #e5e7eb;
+            color: #4b5563;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dark-toggle:hover {
+            background-color: #d1d5db;
+        }
+
+        body.dark .dark-toggle {
+            background-color: #374151;
+            color: #d1d5db;
+        }
+
+        body.dark .dark-toggle:hover {
+            background-color: #4b5563;
+        }
+
+        .btn-register {
+            background-color: #fbbf24;
+            color: black;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-register:hover {
+            background-color: #f59e0b;
+        }
+
+        .user-avatar {
+            width: 2rem;
+            height: 2rem;
+            background-color: #d1d5db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.dark .user-avatar {
+            background-color: #4b5563;
+        }
+
+        /* Main content */
+        .main {
+            padding: 2rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1.875rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 2rem;
+        }
+
+        body.dark .section-title {
+            color: #f9fafb;
+        }
+
+        /* News grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (min-width: 1024px) {
+            .news-grid {
+                grid-template-columns: 1fr 2fr;
+            }
+        }
+
+        .main-news {
+            position: relative;
+            background-color: black;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 20rem;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.8;
+        }
+
+        .news-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+        }
+
+        .news-title {
+            color: white;
+            font-size: 1.25rem;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+
+        .secondary-news {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+        }
+
+        @media (min-width: 768px) {
+            .secondary-news {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .news-card {
+            position: relative;
+            background-color: black;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            height: 9rem;
+        }
+
+        .news-card-title {
+            color: white;
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.3;
+        }
+
+        .news-tag {
+            background-color: #dc2626;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            margin-bottom: 0.5rem;
+            display: inline-block;
+        }
+
+        /* Results grid */
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .results-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .match-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.dark .match-card {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+
+        .team-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .team-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .team-logo {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 50%;
+        }
+
+        .team-name {
+            font-weight: 500;
+            color: #1f2937;
+        }
+
+        body.dark .team-name {
+            color: #e5e7eb;
+        }
+
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        body.dark .score {
+            color: #e5e7eb;
+        }
+
+        .vs-divider {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            margin: 0.5rem 0;
+        }
+
+        body.dark .vs-divider {
+            color: #6b7280;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: white;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 4rem;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        body.dark .footer {
+            background-color: #1f2937;
+            border-color: #374151;
+        }
+
+        .footer-content {
+            padding: 2rem 1rem;
+        }
+
+        .footer-main {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .footer-copyright {
+            color: #4b5563;
+            font-size: 0.875rem;
+        }
+
+        body.dark .footer-copyright {
+            color: #9ca3af;
+        }
+
+        .social-links {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #4b5563;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .social-icon:hover {
+            color: #dc2626;
+        }
+
+        body.dark .social-icon {
+            color: #9ca3af;
+        }
+
+        body.dark .social-icon:hover {
+            color: #ef4444;
+        }
+
+        .footer-made-with {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        body.dark .footer-made-with {
+            color: #6b7280;
+        }
+
+        .whimsical-logo {
+            width: 1rem;
+            height: 1rem;
+            background-color: #9ca3af;
+            transform: rotate(45deg);
+        }
+
+        body.dark .whimsical-logo {
+            background-color: #6b7280;
+        }
+
+        /* Icons */
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+        }
+
+        .icon-small {
+            width: 1rem;
+            height: 1rem;
+        }
+
+        /* Hidden class for dark mode toggle */
+        .hidden {
+            display: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                height: auto;
+                padding: 1rem;
+                gap: 1rem;
+            }
+
+            .nav-left {
+                order: 3;
+                gap: 1rem;
+            }
+
+            .logo-container {
+                order: 1;
+                flex: none;
+            }
+
+            .header-right {
+                order: 2;
+                flex: none;
+            }
+
+            .footer-main {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="min-h-screen bg-gray-100">
-        
-        <div class="bg-gray-400 text-gray-600 text-xs px-4 py-1">
-            SITE
-        </div>
-        
-        <header class="bg-white shadow-sm">
-            <div class="max-w-7xl mx-auto px-4">
-                <div class="flex items-center justify-between h-16">
+    <!-- Top bar -->
+    <div class="top-bar">
+        SITE
+    </div>
+    
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                
+                <div class="nav-left">
+                    <a href="#" class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <line x1="3" y1="6" x2="21" y2="6"></line>
+                            <line x1="3" y1="12" x2="21" y2="12"></line>
+                            <line x1="3" y1="18" x2="21" y2="18"></line>
+                        </svg>
+                        <span>TABELA</span>
+                    </a>
+                    <a href="#" class="nav-item">
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12,6 12,12 16,14"></polyline>
+                        </svg>
+                        <span>TIMES</span>
+                    </a>
+                </div>
+
+                <!-- Logo -->
+                <div class="logo-container">
+                    <img 
+                        src="https://i.postimg.cc/zv8J9sSP/FUT-RJ-removebg-preview.png"
+                        alt="Escudo Site"
+                        class="logo"
+                    />
+                </div>
+
+                <!-- Right side -->
+                <div class="header-right">
+                    <!-- Dark mode toggle -->
+                    <button id="darkToggle" class="dark-toggle" aria-label="Alternar modo escuro">
+                        <!-- Moon icon (shown in light mode) -->
+                        <svg id="moonIcon" class="icon" viewBox="0 0 24 24">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                        </svg>
+                        <!-- Sun icon (shown in dark mode) -->
+                        <svg id="sunIcon" class="icon hidden" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="5"></circle>
+                            <path d="m15.91 11.672 1.45-1.45c.431-.431.431-1.129 0-1.56-.431-.431-1.129-.431-1.56 0l-1.45 1.45m-10.182 0-1.45-1.45c-.431-.431-.431-1.129 0-1.56.431-.431 1.129-.431 1.56 0l1.45 1.45m9.318 10.182 1.45 1.45c.431.431.431 1.129 0 1.56-.431.431-1.129.431-1.56 0l-1.45-1.45m-10.182 0-1.45 1.45c-.431.431-.431 1.129 0 1.56.431.431 1.129.431 1.56 0l1.45-1.45M8 12a4 4 0 1 0 8 0 4 4 0 0 0-8 0Z"></path>
+                        </svg>
+                    </button>
                     
-                    <div class="flex items-center space-x-8">
-                        <div class="flex items-center space-x-1 text-gray-600 hover:text-gray-800 cursor-pointer">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="3" y1="6" x2="21" y2="6"></line>
-                                <line x1="3" y1="12" x2="21" y2="12"></line>
-                                <line x1="3" y1="18" x2="21" y2="18"></line>
-                            </svg>
-                            <span class="font-medium">TABELA</span>
-                        </div>
-                        <div class="flex items-center space-x-1 text-gray-600 hover:text-gray-800 cursor-pointer">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12,6 12,12 16,14"></polyline>
-                            </svg>
-                            <span class="font-medium">TIMES</span>
+                    <a href="#" class="btn-register">CADASTRE-SE</a>
+                    <div class="user-avatar">
+                        <svg class="icon icon-small" viewBox="0 0 24 24">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main content -->
+    <main class="main container">
+        
+        <!-- News section -->
+        <section>
+            <h2 class="section-title">NOTÍCIAS DA SEMANA NO RJ</h2>
+            
+            <div class="news-grid">
+                
+                <!-- Main news -->
+                <div class="main-news">
+                    <img 
+                        src='https://lncimg.lance.com.br/cdn-cgi/image/width=1280,height=720,quality=75,fit=cover,format=webp/uploads/2024/12/Arrascaeta-Flamengo-aspect-ratio-512-320.jpg'
+                        alt="Arrascaeta Flamengo"
+                        class="news-image"
+                    />
+                    <div class="news-overlay">
+                        <h3 class="news-title">
+                            Arrascaeta lamenta "pequenos detalhes" que custaram a vitória do Flamengo
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- Secondary news -->
+                <div class="secondary-news">
+                    
+                    <div class="news-card">
+                        <img 
+                            src='https://sportbuzz.com.br/wp-content/uploads/2025/09/esse-86-750x375.jpg'
+                            alt="Fluminense vs Santos"
+                            class="news-image"
+                        />
+                        <div class="news-overlay">
+                            <h4 class="news-card-title">
+                                Thiago Silva valoriza empate do Fluminense contra o Santos na Vila
+                            </h4>
                         </div>
                     </div>
 
-                    
-                    <div class="flex-1 flex justify-center">
-                        <div class="px-6 py-3 rounded-lg flex items-center space-x-2">
-                                    <img 
-                                    src="https://i.postimg.cc/zv8J9sSP/FUT-RJ-removebg-preview.png"
-                                    alt="Escudo Site"
-                                   class="w-28 h-auto object-contain">
+                    <div class="news-card">
+                        <img 
+                            src="https://ds-images.bolavip.com/news/image?src=https://images.antenadosnofutebol.com.br/webp/full/ANF_20250909_ANF_317652_AGIF25083019130462-scaled-e1756845221549-1024x577_c2723074.webp&width=1024&height=577" 
+                            alt="Botafogo player"
+                            class="news-image"
+                        />
+                        <div class="news-overlay">
+                            <h4 class="news-card-title">
+                                Ex-Palmeiras, Danilo tem melhor atuação pelo Botafogo
+                            </h4>
+                        </div>
+                    </div>
 
-                                </div>
-                            </div>
+                    <div class="news-card">
+                        <img 
+                            src="https://vasconoticias.com.br/wp-content/uploads/2025/08/diniz-vasco-x-corinthians-sao-januario.jpg" 
+                            alt="Vasco celebration"
+                            class="news-image"
+                        />
+                        <div class="news-overlay">
+                            <h4 class="news-card-title">
+                                Diniz celebra vitória do Vasco e mira duelo com o Botafogo: "Adversário muito forte"
+                            </h4>
+                        </div>
+                    </div>
 
-                    
-                    <div class="flex items-center space-x-4">
-                        <button class="bg-yellow-400 hover:bg-yellow-500 text-black px-4 py-2 rounded font-medium">
-                            CADASTRE-SE
-                        </button>
-                        <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-gray-600">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <circle cx="12" cy="7" r="4"></circle>
-                            </svg>
+                    <div class="news-card">
+                        <img 
+                            src="https://images.pexels.com/photos/274506/pexels-photo-274506.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                            alt="Player departure"
+                            class="news-image"
+                        />
+                        <div class="news-overlay">
+                            <div class="news-tag">De saída</div>
+                            <h4 class="news-card-title">
+                                Cuiabano acerta com o Nottingham Forest e deixa Botafogo: "Até logo"
+                            </h4>
                         </div>
                     </div>
                 </div>
             </div>
-        </header>
+        </section>
 
-        
-        <main class="max-w-7xl mx-auto px-4 py-8">
+        <!-- Results section -->
+        <section>
+            <h2 class="section-title">RESULTADOS DA SEMANA</h2>
             
-            <section class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8">NOTÍCIAS DA SEMANA NO RJ</h2>
+            <div class="results-grid">
                 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    
-                    <div class="lg:col-span-1">
-                        <div class="relative bg-black rounded-lg overflow-hidden h-80">
-                            <img 
-                                src='https://lncimg.lance.com.br/cdn-cgi/image/width=1280,height=720,quality=75,fit=cover,format=webp/uploads/2024/12/Arrascaeta-Flamengo-aspect-ratio-512-320.jpg'
-                                class="w-full h-full object-cover opacity-80"
-                            />
-                            <div class="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                                <h3 class="text-white text-xl font-bold leading-tight">
-                                    Arrascaeta lamenta "pequenos detalhes" que custaram a vitória do Flamengo
-                                </h3>
-                            </div>
+                <!-- Match 1 -->
+                <div class="match-card">
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/fla.png" alt="Escudo Flamengo" class="team-logo" />
+                            <div class="team-name">Flamengo</div>
                         </div>
+                        <div class="score">1</div>
                     </div>
-
-                    
-                    <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4">
-                        
-                        <div class="relative bg-black rounded-lg overflow-hidden h-36">
-                            <img 
-                                src='https://sportbuzz.com.br/wp-content/uploads/2025/09/esse-86-750x375.jpg'
-                                alt="Fluminense vs Santos"
-                                class="w-full h-full object-cover opacity-80"
-                            />
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                <h4 class="text-white text-sm font-medium leading-tight">
-                                    Thiago Silva valoriza empate do Fluminense contra o Santos na Vila
-                                </h4>
-                            </div>
+                    <div class="vs-divider">X</div>
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/gremio.png" alt="Escudo Grêmio" class="team-logo" />
+                            <div class="team-name">Grêmio</div>
                         </div>
-
-                        
-                        <div class="relative bg-black rounded-lg overflow-hidden h-36">
-                            <img 
-                                src="https://ds-images.bolavip.com/news/image?src=https://images.antenadosnofutebol.com.br/webp/full/ANF_20250909_ANF_317652_AGIF25083019130462-scaled-e1756845221549-1024x577_c2723074.webp&width=1024&height=577" 
-                                alt="Botafogo player"
-                                class="w-full h-full object-cover opacity-80"
-                            />
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                <h4 class="text-white text-sm font-medium leading-tight">
-                                    Ex-Palmeiras, Danilo tem melhor atuação pelo Botafogo
-                                </h4>
-                            </div>
-                        </div>
-
-                        
-                        <div class="relative bg-black rounded-lg overflow-hidden h-36">
-                            <img 
-                                src="https://vasconoticias.com.br/wp-content/uploads/2025/08/diniz-vasco-x-corinthians-sao-januario.jpg" 
-                                alt="Vasco celebration"
-                                class="w-full h-full object-cover opacity-80"
-                            />
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                <h4 class="text-white text-sm font-medium leading-tight">
-                                    Diniz celebra vitória do Vasco e mira duelo com o Botafogo: "Adversário muito forte"
-                                </h4>
-                            </div>
-                        </div>
-
-                        
-                        <div class="relative bg-black rounded-lg overflow-hidden h-36">
-                            <img 
-                                src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxMSEhUSEhIVFRUVFRUVFxUVFRUVFhUVFRUWFxUVFRUYHSggGBolHRUVITEhJSkrLi4uFx8zODMtNygtLy0BCgoKDg0OFxAQGi0dHx8tLS0tLS0tLS0tLSstLS0tKy0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLf/AABEIAKgBLAMBEQACEQEDEQH/xAAbAAABBQEBAAAAAAAAAAAAAAABAAIDBAUGB//EAEYQAAEEAAMFBAcEBwYFBQAAAAEAAgMRBBIhBQYxQVETImGRFDJScYGh0RUjQrEHU2JyweHwFjOSorLCJENjgtIlNERUg//EABsBAQEBAQEBAQEAAAAAAAAAAAABAgMEBQYH/8QANBEAAgIBAwMCBAQFBAMAAAAAAAECEQMEEiEFEzFBURQiYcEVMnGxIzOBkdEkQqHwBjRE/9oADAMBAAIRAxEAPwDqrv1W6dVRQQwA8CoUcP3UAQPBCURyRhx4FQoQ2uVqkK+Pc0gCvxBAFsbM1WeHVSzVDomxgcTx6q2ZojfG0uGpA9/FQExjbR1PmiKxjWNsd4+apCctFesUKQNhPKQ+aiQC4HS3kK0S2c5tx7xLQcsyNJljd3OXPt/9UkA2b7bA9eyuhkzdmbVmkmMbu61p4jms+os6kN/bKoIOvfKpB72mtHlQpHFmHF9qkVjnNJIp6BkWIzWRn5IUbDh2kBxOo5rLoqk0qJSb4FVGQxNPNypCQjxQo0+9QpXc518dEDJWGxxSxQ2U0OKgIJbIu1QFz65oCMudx0Qg831Vso2z1Qh583fN4FUfIfVebdI/T/gi9wHfKTx8h9U3SH4Ivc6TYzsRPEJRIGg60RZrx1VUpNHytRgjiybCDY22Jp5ZIm0ez4u5fDVFNs3m0kcUFJ+pLtjasuFyF4vtDlFcj5o5NGcGlhmun4NPFzyxQ9q8jQXXP3cUc3VnLHp45MmxHKTb3xuIJa7Q3z+qm+R9T8EfudXhIJJGCUACxYGt15qqTo+TlxQjPaZuyMUZ5XxtaQWGnXdA+aiyNs75tFHFBSb8k22cScO5mcE5zlbV8Ty4qvI0ZwaRZk2n4I9ubQOGDM49fhx49FO40bwaFZm6fgsYoyRw9u5ugFkWbAV3yqzlDTRlk2Jjdk4t+Jj7SNnd4aki0U5M3n0kcMtsmRY/bIw7skujqvn9FO40dMHTZZ47oMbg9r+kuyRNs8elfJFlbGfprwx3TZR3k2a5jg+WwCaFa6nlwSWRo44NGsr+Vk0cYwbM7wQH8/6Cdxo1j0Hck4xZs7HxHbMzMaSOvX5LUcrZzzaTsupMjbjWiXsgw9pxqvmne5ovwT2b74LWNx5ibme0gDnojy0Yx6V5HUWNhne9mdrCQdeWoWll+hJ6bbLa2Nwu1hIS1gJLdCNNFnum56KUEm35HYnaoiH3gLQetKvNRMeink/LyV4NuROeMjrJ5Cvqp3rOkum5YK5E+08WWDO9pAriar80eSjlj0zyOkxbNxj3NzBhLeRFfVFksk9M4Pa2SR7azOyMZmI4gVp79UWU1PRyirZF9ugPykd72ef5p3kVaLJt3LwSYnbGUW5jgBzI/mq8piOllJ0iOLbGZuZsbnDqB/NO4hLTSi6ZDHt6O6Oh6FTvI38Bla4Vlpu0GHUOAV7qM/BZV6Bfj2HmPmp3Yj4PL7DJsSCKBHzTuxJ8Hl9h0eJZwsX8VVliR6TL7Ehmb1HzV7sSfC5PYUjwBxHmndRPhsnsQ+ls6jzV7sR8Nk9jyLKvOf0fYItVsy4nf7kgjAzG+b68NE9Gfl+px/1cUU/0YM70x8G/xVj5NdZVKKRd/SELdhR/1R+YSXk8/S4/Lkf0L2/kLnYYZWk0ASbqgPzSXoZ6W0tRy6PLy1Sz9c48We4bKbUEY/YH5LcfB+B1H86X6nMbjj/icWT7azDyfS6iv4WP9B2/4JfhenahJ+TPTPy5P0Gb/wAOZ+Eb1kCk2demuo5X9DpttwXhXs/YI+S3JfKfN00q1Cf1Mz9HjawbfefzUh6nfq3OdnLfpIbeJb+5/FZfln3ehr+Cy3+jMfeyfuhI+Tj17iETW377TJHdZe1Z7/WFJOz53S9tyr2Fv3A52FZlBNFpNJLwjfS5xjndmluSKwka1DweXqf/ALDKgH/qf/5LP+86f/H/AFLW+/8A7V/wVyeDl07+cjU2YPuWV7A/JWP5Tz5/5z/U57dNv/E4q/bH5BYx+We7W/ycZH+khn3TP3lch26J/MZyW6pLMSw5SdeA/Nc0+T7XUYJ4Geg74ZzhXlgB01B6LrPwfmenuPfSZR3HxLjgzf4bA+HBSPhno6liitQvqV9wSXvnkdxL68lMfk11RKMYRQNqw1tOE16wPySX5hglejkdBvJGPRpNPwldJ+D5+kf8aJX3RA9Ei0/CpDwb119+Rwm92GAxb6FcCuMuGfpOmfNgRlCFYs+htQTEljYARK2NqAWINiGG+pVHbXsB73V6x8yiJ2o+xG1rvad5lXgPHH2KZ3oh/wDr/Ji7dk/MfjOVDxvPhz/8c/4WfVO0PxnKWoN82sYY2Rva13FoDdfmp2mcZdQ3y3yXI7Z2+UcN9nE9mbjQbr81e20M3UO7+ZWPxe+LJS0yMe4sotsN0r4qPG2MeujjTUY+SziN/RI0xvD8p0rKNR5o8baMY9VCEtyjyZ7tu4T9U7/D/NTtM9v41P1NaH9IbQ3JmcBVepy99rXba4PA9RictziQYDfGGEuMeYF+rjlOp68VO20ds2vhlSUl4HY3fKKYsLy45CC3unQ9VHCTGLW48aaivJJit8oZXse8uJZq3uu0R45Pyax67HCLil5Lsu/zHNLS91EV6jkcZHKGfDGSlQzZ2+8UDAxjiAP2XfRFCSNZtThyy3SRS2jvNh5355CSeHqu4LLxyPTp+pxwR2wRY2TvRhsO7NG8gnjbX/RFjkuTGq6jDURqaLG1t8cPiMofJ6pBADXjUajktSjJnDTavHhul5J5t/Yns7IvFVV06/yRxlVGIZ8UMm/kOyd9oYGCNsgLRwsO0+SRjKJdRnxZpbn5GN3pg7f0jtm56rnVdOCmyV2dHqsXa7dE+1t74cQzI6VjW86PH5KyjKRz02fFhluRdwe+8LGBnaxmhQJcqlJKjnklinNyKuz95IInvkE8ZMhs24cVFFp2dsuox5Ixj7Ee2954MQA10rAAb0cFJxlI66PU4tO9yKezdo4aJ4kbOyx1e1YWOSZ6tR1LHlg4M3do72wzxmPtIxYonO1dJbmj52nlixzU7sp7G25Dh4nRCVhBvXO3mspNHp1OfFnyKdj9hbbiwwcGvYczi71m8SkdyJq8mLO1z4DtHbsb5o5s7QWcszdb+KO27JilihjlC/Jdxm9Ec0bo7aMwq8zfqtSbao44oQhNS3EmxNtxwRNiJDsooGx9Ui2lRdSoZcm5MxdrPZLIZC8C+Wn1XOUW2fT0msx4cahZUbhoj/zB8vqs9tnq/E8YjhI/1g+X1TYx+J4wHCM/WD5fVTYy/iUADAsP/M+X81djL+J4wP2Y39Z8v5ptkPxOBEdmj9YPL+abWa/E8Yjs5v6weSUyfiWM8zLF7T8YMIrmqQkYVCklIUItAHVAElAMiw9qtkUROUKOYQgJAoAoUSAVIQVKkEyM3xQIDodeKB+Q0UAuCFDmQBzIBZlCjS5UDAhAGNwOqvBlp2ThQ0EgKUBUEADSFGGugQDHMvgFTI0ReCFsIZWtIWxfBKM2IAqULCbCpRpeep8ylCxhmPU+ZShbIYnIQTgVQN1CAla4oBwKgHWhRZkIPhk1UZpeQzc0QaIGSUtGSQPUA8SKAWdALOlFFnQDon94IWPkhnPfKq8Ea5Nrd3d+bGOLYgA1vrSOsMbfK+Z8AoDsh+jJuWjijn6iMZfLNfzUsUcfvDu/Ng3ASAFjvVkb6rq4jwd4H5qoGTmVAi5ARPehCxhW2Qss1EM8luVQk+RmZUgMyAWZABz0BE6S1SD2FQtDe1pKISdqHJRRpKEBmQDXydUQIi60AMqoBFqK5qBDggGOVAy/FCD2v8UA4P8AFALN4oUV+KELR1FrJ0ZUe1aMCB8UA60AsyAOZAIlAPhccwQqGyu7xReCPyegbO2o2PBwRse2MZc8jy7KC95uib1NCq6Bc536HXFV8mrhNtQMjt2Ljq+Vcf4rh810e1uCVkO2toRzYHEAPEjMpexwBAEkfe5gEE6D4rpC06Z5s1SVxPMu0XY8wDKqQDH2UKXYzTSVj1NrhWVO0WjIc6EBnQAMiAY6RWiWOaUKSgqFGzxjTqiDI2mlSBzqAY6RWgNzeCEC0oUc0qAqtNarRksONjMsmwFCETgtIyNpAG0AQgCgLUEndpZaNp8DJaQjIDS0ZCCELYQQgsOiAVhAOw57wUZV5DivXKLwH5Ov2dBh5WNjxT3AZiWFlNDg4Ny0A3W/hxK4zlJeD044Ql5L2AdgC1+CGHlkPa5+BIa4AtGeQG2jTjwF81hqb+Y6p418tGjhcXhHRdnhmnDlvfkJGoDPX7zTqaBAcDofcs1LcbTgonmM8gc5zhYBcSAeIBJIBXrS4Pny5bZH8VTJLEFGVFnEy9yllLk1J8FIe9bMCJ8UAL8VSAvxQBAUKTN4LJSaI13uiGkVZJLN2tGGxubxQAs9UAEIOCGghQDggKwWjJJE/kVkqY8FCjXIQYVSCBQBBQBQD4naqMqJZY+iWVogKpGK0IG0ArQoLQg+E94IVDsQe8VEWXksYWUltEnu6jU6A6adNfzUZqDOg2Dhx3Q9kLmO4ySTEFo6ZAePRc5M9GNpeUN20bZiOza3IC0dwd0XI01/H4+KkPKs1lXyvacx8F3PFYK8ELRLDHajZUgYh2tIiMiVIJANKATUBI1QpKAoBs8nIKoMg+CpkaUAkAUKOCgCAhaGuKpC36IyuBWbKH0NvQqNsDcVCARQNc0TBDK3otAjhaCaPBDJc9FZ4qWy8B9EjocVNzHA84KPqU3MUg+hMvmpuLSIMQACQtIpDEwE6qsyXfs9tXZWNwpB+zm9Sm4UgnZrb4lNxaQWbMaTRcU3jaMfs63BsQdI88GsaXOPua0WqnZa9jSO52JDBJK1sQNaSPbG7XgTmpo/dJzeCtpHaOmyy8Idjtg+jx3mbIXmiW2WtADXNAd1Nnl+A9CsuR7cOhbxyv8AN6GHBhXOeG0dTqeQHUlVySR546XLKW3ad/syIENia0NiaLkJFjJ+Mu63ZFcyQvMrbtn6bD0+ODC3PmUuEv1K+L2fgmlhiw2Y91xL5JS2y0HKWF1EWeGvAanULq8teDhpegKUnLLdX6EeIw2He4OkwkQ04QmSCxrrTXZeuuVRZX6nql/45psl9uTTRVxe70Jbmw0rg667Cas2vsTNAa4fvBpWu4qPkZ+g6nFKo/Mvcw5tk5XEOJaeYIohaUz4s8UoOpcMjOzRfrJuOe0Ddmj2ldw2g+zP2k3CitPh8nO1pOxQ2IWjBZw8GYnWllspb2bu7JiJOzjcM1OdbjQAaLJJo1095CjnQjByfBU+zjV5grvJQ0bMPtBNworzwZDVrSZBscVoAllFCkzcMS2wQpYGjAOPMJuJRtnENyjguVMpI3FNscE2stjpXMfYJGo8ESYMCUgAs6c11Rkfses+vTmkvARuRva0E92lypmiV0rCAaapTKF0rOjUpgaMQ1zqAalMWZG2oQDYI+C6QIx274bmdmASdkibTiGjkQuVNmiUyMNEAKUy8DrZd0EpgkwcYkLiAGsbWeQiwwE0LriTyA1KtNeTthxSzTUIK2yWTaDQ0xYe42HU8M8v7Ujhx/d4D5rMpt8I/ZaDpmDTx55m/X/BWkYQXNNEglvDjRrTosc2fUhU8VvjgftDDvgfLGYywOsOaW5hXFjsp1BHEFabcWfMjhhnxRlHwvVFVmAhaXUQ8HmSCeHwUlLk66TSYVBufLfubWxoGCQMa2w6ElrDfZukbGS0uZdONtcNfaW4vk55tPCOPdHjbKuPNWdG/COkjic+KLJKwMD2xMHedCSx7CNWZXNA14/JdaVHzceft5ZqMncXdX9eU/e0chO642HmM7fgCHf71wn4P0sW45ZfWn9vsRxvrU/D6rmj0ySq2W8NiI3vHbhpYdC5zczg3T1KBLTpxAW4umfH6hoMeXG5KNy9C7h9l4Wd73dn2bHSlkWU1TWjM4kHjpkFdZPBacmlZ8LV9PxY4RjXzJXL9X6D5NxDdxyRuafazNPkAQiyHxHgaKk+5Mw4GI+GZ4/Nqu8nYkc7t3dfERixh3nqWDtP9NldISRyljkvQ59kZb3XgtJ5OBB8iujZijdw0UbWa1ddVyb5NHabK3XcMIXxnJNKNczi2mk6MscDWvvpcnLk9MIVB15Zg4rdnsQO3khiu6zSWTVXlawEmrHmFvczl2X68FPE4HDtAyTCR10QGPaK6hzuI+qtsjgl62c9tmMNfousDkyvERl8bVBc2bgs5tw0UlKgjQkwbK0tc7ZaEzCsrmlslHKWeq7UZDmPVKAs56lUWFrigDnPLRAHtXdT5pQEJXdT5pQD2rup80ooBK4cCfNKAc7jxJKUiB7QjgaQB9Jf7RSkBzcQ8fiKbUWzc2NsWedhlLiyFpGZxrM6+UbD6xqyCaGnFZdJWenBpcmaUYpVZ02KxMYjbh4mOZEDmIcHF0j/AGnkE2RwHvXmyZNx+w6Z02Okt5Pmb+ngwdoNLaLTpf5+/gsx5ZvWQeKpRfFm5sja7Y53SGISOLszMx7oa42SW0bJaRWui0qi7MS36rCoKW1Jc/Wi9tva0mIkAc1gLC5rS1pLi3NoHEk3Xu69UlJyPboNFj0uO1PiSXnxZnY1nfs6HLGdGgV9209FmS5PRpcUZY91+r/dk2JbJH2WYyNdkzDNmaf7x5BHy1VaqiYO1llkivmV/Y05dsTuw1E00uLM1UNRbsvLMbIJHXlZWt7o8cenaeOr9+Lr/voYsjrjA/bcfkz+S5vlH0ZK8ra9l+7MZu1HEkNjujV2ANFrZR8pdXnOThCF0Stnf+JvxHH5rLSOsc2Z/mX9gbX22GmOOMODWRjnRL3EmRx/7tPc0LtGNo/OdU1Djkcffn/CGbO3wniOmo6E/VV4kz5UdT7m4P0gnTMw+NBY7LOnxMS3D+kCM8b+Oiz2pGlngyWTf6DpfwKbJh5sZTxm+0RaQyKiQacNCDXFVY5WR5sdcGvuviTPHllxLcwA7rLB+LjRv3LEo8m4y4HbYiADWtYX04m2xxyEWKa0h55+HRWCE3aOS2ntd2HjdH2mJYXsdlZJDHkddjUnUjWrGoXaMLPNOaimjjpcQX6ld0qPKRZkBYi2k9ooFRxTFhO039U2oWxDaT1NqFsqWtGqFaFoNoKEgoSCg2goNoKFaFpCtBQbQlAtC0bGzN2sTPRZEQ0/if3B8L1PwCxLIkbjib8I6PCblshp+KkDq1yMFNv9px1I8KC4yzex3jpkuWWpsQyYFmcCSJtszV97CAab4vZrXVunILLTa5P0Wi1aulxf/D9/0fr9TnsZjy3QGuh71H4AkKRhZ11WuePhOn/X/Jiz4tzjqfhZpehQSPgZ9XknL5pGph8Q6mkcfV8gK+VD4LnKJ9TS6icVR6nBhHAujYHsD5+yc+Oswa0B0szndC9waCdGtBoXdjn3tzUpPdS8Px9FRbn2ZG+aOeYtsiM/3rHNJETiwUQC+y1gzEjMc2lBaaV2MeszQxSw47p/Tnz/AN4LMkUWJiZE6SO3sJI7VrnB7Trq094sBLnciR0c5Hyjz455dNkc4J8fT3/yc1t6KEYYdi8OaJzlaHB2Vrmu0rjfdFk8b00AXOaVH3unTyy1Tlljy4/3MOYVGwc8z78mEfmufoj6t1km/ovucC+Q5iQeZOnvXsS4P51PJJZJOLrlk7doyAVm8wD81l44s9UOp6mKrcQTzl5zHitRVcI8moyyzz3y8ka0efahAoXYg5z1PmpRNoC/3qjaNQbRzZCOBI+KlFoPbu9p3mUpDn3GvffEk+82qR8+RtoTaAoKEqNqEoTaBBtH9iUFjS0oWwWgEgsLASaQWSdiUG4fHG5pDhxBB114G9QoyqVHWwbEi2g10sP3MwvPGR9091XbT+Amx4a8Fz3OLpnoUVkVxOcxGxp43mN0Lw8cW5ST8KsEeIXS0cafsaOC3PxMlFzRGOrzr8GjXzpYeWKOscMpHTbP2Dh8JTnZZJB+J1aH9lvBv5+K4SyuXCPRHDGPLFtTe1rAcpF9ApHG35E80YnN7Q3kll0A08f4LtHEkeeepbMX0l4cHEkkLptTVEw55Y5qaBi8WXmyK6+PjXVSMKO2o1bzSuqILWzyWbmBaTHoAbo68AaNleebpn6bRwlPGpRV8epvYjbDpS0zueDkDQbLmkDR3mRZ96xLk+no54cfyzhUrsuODcsZuxkPL/qPUfg+pgdudL1+xeZ3Ig5jiyzI0kcS1zY7F9DSm50cZwU87U1fCf8AayvFGOzLzo0P4dTlNH5lS+DtJ/x0vWvuUsSbjJ8JT5NH/iqvKOWpe2OV+0f8nDdi7ovYfzhy5B2J6INwOyPRUWNc0hCWNtBYLQWK0JYrQthAJQlhyFBYMpQWLKeiCwZD0QliylBYMpQWLKgs0WMvUIZD2KlgoPb3qCpomy6IZDgo7JKGjRwzG5252uc29WtNOPgDRpR3XBFV8nWYHZbXajZha2ic88z20PayucLHuC4yk/c9cIQf+1m9jdiyERnCuiiYNQ1rabTh3iCPWvQ8L8eC5Xfk7uFflKm8O8TMOA3ts8g0c0N4Hz/NSMHIs8kYnHY7e6V/qmvE/wAl1jhSOEs8n4MWbHOee9I4+5dVFI4SlJ+pGyRg5a9TqtHOi1C8OUI00SmDwQWVMbhwBatlRHFHoqDb2c8dm1pBFmw4ciMwojof4LzZT9d0tx7WO+ODZmIDGAkcCfN7hfy+S4vwfdxKO+bfPj9iwHUyMjo4f5j9Vr0O+CnOa/T9i7CA6LXU9p+bf5KO6OM7jqePb7kGJmthaPVDmfE5ZES4OkI1mTfmn9io7+7kvlG+h/2G0Rz6iv4GSvVfY5L0tq9tH80cGL0pqlDaFk7SaVJTJjACoQgnwQPBLCZRij1paK0KeKkIibCYYOFqWVlpuHASzIyWm8UKkRdq1C0LtWoKB2rUJQDI1UUDO1BQ/IEIXooKACyPIpxlaSqEZmFjskqmmS4htBCRRc2bB3L6qWJGjg5XxPD43FjhfeHEA6GvgstWWMnF2jcilje62ZpXt7xmx0o7KPXUtgBIdrwGptctp6lkT9bKe3N4Jy3sIJHuYLzSuAaXuJJOQADIzXQHXRVY/ck83ojk34GQkk2T1PFdTluQ37Of0Qm5C+zn9EsWh8WzXE6hLI5IvYbZeU3aGXKy92CGTDx8+Y5a4FDrGJNDD3VbMM0cARkLebXf5SPra8+byfrOiZN2Bx9maczO5HpycPJ5P+5cfRH3Mcfnmv0/YtAfdsrkX/7Vr0PVgpZJ19CxE77l2v42/wCl/wBFfQkl/qI/o/3RAxtsd++z/TInobk6zL9H+6IZT928j2Xj/Ia/isx8nDXyXYyN+xxvoD/ZXts/nLaB6A/2VLJaDHgX3wQy2jcwuELW0UOT8kj4NNVCGFlGcgLR1a4Jp4dEOaG7KcBYKhqSNXsQeCGDOx2z3EkjgrZqLSM70Z3RLOgPR3eygGPYRxQUNpCUKkFBzFCUdSIlDkZ+2TQDeqp0ghmFw9NChlshxjNQ3qlm4Lg34cNTQOgQ5vyGVgaCTwAQIqenxoa2McMfH1QvbYftCPqg7bLcNPFgoYaol7BCEc1MFlCrkg9OjHHRDWxkGM2m0DuaqGo43ZgO1dfUqnfbwbcUXdCh5X5CwFhJPdaeZ0sjp1+C45OT9N0i8UG3wmaDpHOYyvVp3HiTm19wrKuTPvYZyySk19C3mqNg8X/7fonoevA6yT/oSxn7t377P9L1V4Orf8dfp90PHdicObnM+AqRL4EnuzRr2f2GlwbGSeBBB9+UfVWK5R8/qr/g5F9DPbio/aC9J/Pdkg+lR9QhNkgjEx9Qg2SEcVH7QVGxlHamOaG03W0NRg2YOHPeQ7OPBudjYSzzVRiYqMtcQh3hyixg9oFp14IJY7L32u3ohjtstwzxuF6BDDixxdH1CE2yIH4WN55WhbaAdks6ITeyGfZLa04oVSKf2M7qqa3o6VsChyOcx57SahwBpDslUTREahyKuAh7SfwaqdnxE6X0dDgZu3u7F7yodcStnKUqeraGkG0VIKLeBxrozpw6ISWNM6zZ2KbKBR1pQ8soNF12EB4i1THgqY3YjHjhVBQ3GbRy2P2W+I6jTqlnpjJMqQs7wVNtcHTsjAaL6LLZ5owc5UiQZSxlts5bJLeJLjwvlQaPgvNN+x+96big8Xzx5X09ibERnRvABrdPFwDj8yVGe3Bj3py93+xLKwBkfucf8xH8EfhG8UUsmT+n7FljKjsCznHu9Uq+hG71H0r7kbYjkeT7UZ+FPH8Qi8G5SSzQr1T+xDiWB0Tm8iW34d1/8vJVM8+twrLcX6pnFEL0n4Rwp0ClSbRUg2lvZeD7V+WyozE/lRuHdce0hw7pU2jsPsm5wbopZqM9xbwrczAUOM1TMrbeHogojpjfJawm7+dgdfFCyyUx7t2vFCd0wsREWOLddEOqSZFmPUqmtpJDO5psFDLgmT/acnVDLxokw21HB1u4IZeJFz7ab0Qx2ma+PxzI8zb1rT4oSGNswtkQ5nlxUbN5OODTnbTSaPkoc4Lkm3UwejpDzNKnTL7HQ9gqcDl97zRazoFD1aePqc3lVPVtFlQbRZUG0OVCqJNh5XMNtKhJQs7LYm12yDK/R2gCh5MmBrwb3o6p56IsRgWuBDheiUVSpnMbR3bLXB0YscSoemOS1yWMVCBGL6tHGtbHNZl4PT07b8QnLwivNiWWe+2uAtw4DQc+gC87TvwftMOqwQxq5r+5JjsdH2jvvWesa7zeANCteisouxh1+njjiu4l/UjnxETg0dq00yiMw0Od5qhw4rTizjj1ekcp7si5fuTMmjbHXas9cGi9o/C7xTa6NR1ulWZNTVUSYbFx09vasst0GdupDmu69AUSZ1y6/TboNTXD9/dDoHNcHtPeBbqGOAOhHB1EDiTw5KVXk3qckMqWya/fyiNm6TSAQ40QD5r0Lwfgs85YskoPynQTue3qU5OXxAv7Hj2k5HfNTZuwmxDhZ6q0cp5HI0PR1TkZ+3o2iJwd00UZ1xJ2c9sXVtdFk6Z40O2zhbjvoqjnDyW92sS3ssrjqClm8uN3Zu9ja0eejNx+xGvB01PNQ6RyNGO7dT9pDr3xh3VPtIO+A7rH2kJ3gHdY9UHeRGd13dUsd5GM9xcbPFD17UkdDsrD5Y766qM8M3bOpwEbBhyHUSeqHOSdcEGIxDI4O4Bob0SxBOuTEbvSR+FD1QwKRh7VxvbPzoj148W1UVMqtnTaDKhdgcqF2CypZdoQFBtJGWDY4oRws6vYG8NVHJ19ZS6PJm03qjsGAOFjULSZ4WqfJHjY6Y5GEjz7fJ7gIm/hOYn94AADyJVgSfk59viF0MWFxbWuh8QgIxOCNfWGl9RyKgJIsZWh1HyRgsiOOQd06+PEe4oSxzAQakGY8iDqff4pRpTkvU6bYm8zY2dm7UN9XqAeR/r8liXB2xY5ZW/c1BvbF0KzuZ6Pg5C/tbD0KbifCSD/AGsh6FNxPg5GftfemwOy0UtnXHpa8nPY/aUk3rngh6I4VEvbtnvUocdRDg3MUBwIsFU8CdM0m7KhJYQ2uCtGJ5J3SK298roQ0x6DmjO2FKT5KmH3liyjNxrVLNvTNvgcd5IUsfDSGneOFLJ8NIYd44Usnw0hv9o4f6pLHw0hp3ih/qksfDSOTwsOdwHUoz2ZeInYCCgGqHz35MDeqZwHdcRXQraOb8l3dvDEwW8k5tddVmR0V0UdtxtDqaKWUz6Wmx8WZvZrR69ocihdog1C7KHCNC7RdkrZVHwLKhrYIMUJsHBqDt2a+C27NE3I06KHCekjLlnQ4PeJskWR/rlSzw5tK4u14MHfnSOEdXE+Ta/iuuM8GTycq0roYGuvkfgeCAilbzqj4cCoCNrSgJGAjr8LVBcY6xZ1947yELcEQq+JJ1Ol/Jcp+T7HTI3GQi1ZPqbAUhHAVITYIBCbAuCE2F3Yb6lCzI458fynbYmG2grSPiSVHPbw4ieOnRupqplt1wWtnynERfenMSqyQfJz+1cD2bqHBZs+npuXRQLUPZsGFqpNgCERNoMqrJtFlQm0/9k=" 
-                                alt="Player departure"
-                                class="w-full h-full object-cover opacity-80"
-                            />
-                            <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                                <div class="bg-red-600 text-white text-xs px-2 py-1 rounded mb-2 inline-block">
-                                    De saída
-                                </div>
-                                <h4 class="text-white text-sm font-medium leading-tight">
-                                    Cuiabano acerta com o Nottingham Forest e deixa Botafogo: "Até logo"
-                                </h4>
-                            </div>
-                        </div>
+                        <div class="score">1</div>
                     </div>
                 </div>
-            </section>
 
-            
-            <section class="mb-12">
-                <h2 class="text-3xl font-bold text-gray-800 mb-8">RESULTADOS DA SEMANA</h2>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <div class="bg-white rounded-lg p-4 shadow-sm border">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/fla.png"
-                                        alt="Escudo Flamengo"
-                                        class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Flamengo</div>
-                                </div>
-                            </div>
-
-                            
-                            <div class="text-2xl font-bold text-gray-800">1</div>
+                <!-- Match 2 -->
+                <div class="match-card">
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/sport.gif" alt="Escudo sport" class="team-logo" />
+                            <div class="team-name">Sport</div>
                         </div>
-                        <div class="text-center text-gray-400 text-sm my-2">X</div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-cente">
-                                        <img src="https://escudosfc.com.br/images/gremio.png" 
-                                        alt="Escudo Grêmio"
-                                        class="w-full h-full object-cover">
-
-                                 </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Grêmio</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">1</div>
-                        </div>
+                        <div class="score">2</div>
                     </div>
-
-                    
-                    <div class="bg-white rounded-lg p-4 shadow-sm border">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full overflow-hidden">
-                                    <img src= "https://escudosfc.com.br/images/sport.gif"
-                                    alt="Escudo sport"
-                                    class="w-full h-full object-cover">
-                                    
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Sport</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">2</div>
+                    <div class="vs-divider">X</div>
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/vasco.png" alt="Escudo vasco" class="team-logo" />
+                            <div class="team-name">Vasco</div>
                         </div>
-                        <div class="text-center text-gray-400 text-sm my-2">X</div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-4">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/vasco.png"
-                                    alt="Escudo vasco"
-                                    class="w-full h-full object-cover">
-
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Vasco</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">3</div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-white rounded-lg p-4 shadow-sm border">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/santos.png"
-                                    alt="Escudo Santos"
-                                    class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Santos</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">0</div>
-                        </div>
-                        <div class="text-center text-gray-400 text-sm my-2">X</div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/fluminense.png"
-                                    alt="Escudo fluminense"
-                                    class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Fluminense</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">0</div>
-                        </div>
-                    </div>
-
-                    
-                    <div class="bg-white rounded-lg p-4 shadow-sm border">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/botafogo.gif"
-                                    alt="Escudo Botafogo"
-                                    class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Botafogo</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">4</div>
-                        </div>
-
-                        <div class="text-center text-gray-400 text-sm my-2">X</div>
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-3">
-                                <div class="w-8 h-8rounded-full flex items-center justify-center">
-                                    <img src="https://escudosfc.com.br/images/bragantino.png"
-                                    alt="Escudo Red bull bragantino"
-                                    class="w-full h-full object-cover">                              
-                                </div>
-                                <div>
-                                    <div class="font-medium text-gray-800">Red Bull Bragantino</div>
-                                </div>
-                            </div>
-                            <div class="text-2xl font-bold text-gray-800">1</div>
-                        </div>
+                        <div class="score">3</div>
                     </div>
                 </div>
-            </section>
-        </main>
 
-        
-        <footer class="bg-white border-t mt-16">
-            <div class="max-w-7xl mx-auto px-4 py-8">
-                <div class="flex items-center justify-between">
+                <!-- Match 3 -->
+                <div class="match-card">
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/santos.png" alt="Escudo Santos" class="team-logo" />
+                            <div class="team-name">Santos</div>
+                        </div>
+                        <div class="score">0</div>
+                    </div>
+                    <div class="vs-divider">X</div>
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/fluminense.png" alt="Escudo fluminense" class="team-logo" />
+                            <div class="team-name">Fluminense</div>
+                        </div>
+                        <div class="score">0</div>
+                    </div>
+                </div>
+
+                <!-- Match 4 -->
+                <div class="match-card">
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/botafogo.gif" alt="Escudo Botafogo" class="team-logo" />
+                            <div class="team-name">Botafogo</div>
+                        </div>
+                        <div class="score">4</div>
+                    </div>
+                    <div class="vs-divider">X</div>
+                    <div class="team-row">
+                        <div class="team-info">
+                            <img src="https://escudosfc.com.br/images/bragantino.png" alt="Escudo Red bull bragantino" class="team-logo" />
+                            <div class="team-name">Red Bull Bragantino</div>
+                        </div>
+                        <div class="score">1</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-main">
                     
-                    <div class="text-gray-600 text-sm">
+                    <div class="footer-copyright">
                         © 2025 FUT RJ
                     </div>
                     
-                    <div class="flex items-center space-x-4">
-                        <svg class="w-6 h-6 text-gray-600 hover:text-red-600 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+                    <div class="social-links">
+                        <!-- YouTube -->
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                         </svg>
-                        <svg class="w-6 h-6 text-gray-600 hover:text-blue-600 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+                        <!-- Facebook -->
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                         </svg>
-                        <svg class="w-6 h-6 text-gray-600 hover:text-pink-600 cursor-pointer" viewBox="0 0 24 24" fill="currentColor">
+                        <!-- Pinterest -->
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378 0 0-.599 2.282-.744 2.840-.282 1.084-1.064 2.456-1.549 3.235C9.584 23.815 10.77 24.001 12.017 24.001c6.624 0 11.99-5.367 11.99-11.987C24.007 5.367 18.641.001 12.017.001z"/>
                         </svg>
-                        <div class="w-6 h-6 text-gray-600 hover:text-black cursor-pointer">
-                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-                            </svg>
-                        </div>
+                        <!-- Twitter/X -->
+                        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                        </svg>
                     </div>
                 </div>
 
-                
-                <div class="mt-8 text-center">
-                    <div class="flex items-center justify-center space-x-2 text-gray-400 text-sm">
-                        <span>Made with</span>
-                        <div class="flex items-center space-x-1">
-                            <div class="w-4 h-4 bg-gray-400 transform rotate-45"></div>
-                            <span>Whimsical</span>
-                        </div>
-                    </div>
+                <div class="footer-made-with">
+                    <span>Made with</span>
+                    <div class="whimsical-logo"></div>
+                    <span>Whimsical</span>
                 </div>
             </div>
-        </footer>
-    </div>
+        </div>
+    </footer>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Dark mode toggle functionality
+        const darkToggle = document.getElementById('darkToggle');
+        const moonIcon = document.getElementById('moonIcon');
+        const sunIcon = document.getElementById('sunIcon');
+        const body = document.body;
+
+        // Check for saved dark mode preference or default to light mode
+        const isDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        if (isDarkMode) {
+            body.classList.add('dark');
+            moonIcon.classList.add('hidden');
+            sunIcon.classList.remove('hidden');
+        }
+
+        darkToggle.addEventListener('click', () => {
+            body.classList.toggle('dark');
+            
+            if (body.classList.contains('dark')) {
+                moonIcon.classList.add('hidden');
+                sunIcon.classList.remove('hidden');
+                localStorage.setItem('darkMode', 'true');
+            } else {
+                moonIcon.classList.remove('hidden');
+                sunIcon.classList.add('hidden');
+                localStorage.setItem('darkMode', 'false');
+            }
+        });
+    </script>
 </body>
 </html>
