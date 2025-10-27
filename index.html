@@ -156,18 +156,26 @@
         }
 
         .user-avatar {
-            width: 2rem;
-            height: 2rem;
-            background-color: #d1d5db;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: background-color 0.3s;
+}
 
-        body.dark .user-avatar {
-            background-color: #4b5563;
-        }
+.user-avatar:hover {
+  background-color: #f0f0f0; /* muda a cor ao passar o mouse */
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+  stroke: #333;
+  stroke-width: 2;
+  fill: none;
+}
+
 
         /* Main content */
         .main {
@@ -481,6 +489,41 @@
                 text-align: center;
             }
         }
+
+        /* Menu suspenso de times */
+.times-dropdown {
+  position: absolute;
+  top: 3.5rem;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  display: flex;
+  gap: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.times-dropdown img {
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.times-dropdown img:hover {
+  transform: scale(1.1);
+}
+
+body.dark .times-dropdown {
+  background: #1f2937;
+  border-color: #374151;
+}
+
+.hidden {
+  display: none;
+}
+
     </style>
 </head>
 <body>
@@ -503,13 +546,22 @@
                         </svg>
                         <span>TABELA</span>
                     </a>
-                    <a href="#" class="nav-item">
-                        <svg class="icon" viewBox="0 0 24 24">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12,6 12,12 16,14"></polyline>
-                        </svg>
-                        <span>TIMES</span>
-                    </a>
+                    <div class="nav-item" id="timesMenuBtn">
+    <svg class="icon" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="10"></circle>
+        <polyline points="12,6 12,12 16,14"></polyline>
+    </svg>
+    <span>TIMES</span>
+
+    <!-- Menu de times -->
+    <div class="times-dropdown hidden" id="timesDropdown">
+        <img src="https://escudosfc.com.br/images/vasco.png" alt="Vasco" title="Vasco" />
+        <img src="https://escudosfc.com.br/images/flamengo.png" alt="Flamengo" title="Flamengo" />
+        <img src="https://escudosfc.com.br/images/fluminense.png" alt="Fluminense" title="Fluminense" />
+        <img src="https://escudosfc.com.br/images/botafogo.gif" alt="Botafogo" title="Botafogo" />
+    </div>
+</div>
+
                 </div>
 
                 <!-- Logo -->
@@ -537,11 +589,13 @@
                     </button>
                     
                     <a href="#" class="btn-register">CADASTRE-SE</a>
-                    <div class="user-avatar">
-                        <svg class="icon icon-small" viewBox="0 0 24 24">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="12" cy="7" r="4"></circle>
-                        </svg>
+                    <a href="entrar.html" class="user-avatar">
+  <svg class="icon icon-small" viewBox="0 0 24 24">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+    <circle cx="12" cy="7" r="4"></circle>
+  </svg>
+</a>
+
                     </div>
                 </div>
             </div>
@@ -783,6 +837,22 @@
                 localStorage.setItem('darkMode', 'false');
             }
         });
+        // Interatividade do menu "TIMES"
+const timesMenuBtn = document.getElementById('timesMenuBtn');
+const timesDropdown = document.getElementById('timesDropdown');
+
+timesMenuBtn.addEventListener('click', (e) => {
+    e.stopPropagation(); // evita que clique feche o menu imediatamente
+    timesDropdown.classList.toggle('hidden');
+});
+
+// Fecha o menu se clicar fora
+document.addEventListener('click', (e) => {
+    if (!timesMenuBtn.contains(e.target)) {
+        timesDropdown.classList.add('hidden');
+    }
+});
+
     </script>
 </body>
 </html>
